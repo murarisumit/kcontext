@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  kcontext-test:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    volumes:
+      - ..:/workspace
+    working_dir: /workspace
+    command: /bin/bash
+    stdin_open: true
+    tty: true

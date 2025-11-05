@@ -1,0 +1,37 @@
+
+flags() {
+    echo "Usage: $0 [options]"
+    echo "Options:"
+    echo "list_eks_clusters            List all available EKS clusters"
+    echo "fetch_eks_kubeconfig         Fetch kubeconfig for a specific EKS cluster"
+}
+
+list_eks_clusters() {
+    aws eks list-clusters --output text --query 'clusters[*]' | tr '\t' '\n'
+}
+
+fetch_eks_kubeconfig() {
+    # list clusters
+    if [ -z "$1" ]; then
+        echo "Please provide a cluster name. Available clusters:"
+        list_eks_clusters
+    else
+        # fetch kubeconfig
+        aws eks update-kubeconfig --name $1 --kubeconfig ~/.kube/$1.kubeconfig 
+        echo "Usage: export KUBECONFIG=~/.kube/$1.kubeconfig"
+    fi
+}
+
+if [ -z "$1" ]; then
+    flags
+elif [ "$1" == "list_eks_clusters" ]; then
+    list_eks_clusters
+elif [ "$1" == "fetch_eks_kubeconfig" ]; then
+    fetch_eks_kubeconfig $2
+else
+    flags
+fi
+
+main() {
+    fetch_eks_kubeconfig $1
+}

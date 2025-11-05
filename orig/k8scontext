@@ -1,0 +1,43 @@
+
+#!/usr/bin/env bash
+
+flags() {
+    echo "Usage: $0 [options]"
+    echo "Options:"
+    echo "list_eks_clusters            List all available EKS clusters"
+    echo "fetch_eks_kubeconfig         Fetch kubeconfig for a specific EKS cluster"
+}
+
+
+KUBECONFIG="$1"
+declare_variables() {
+    KUBECONFIGS=($(ls -1 ~/.kube/*.kubeconfig | xargs -n 1 basename | sort))
+    ALIAS="kcontext"
+    r="\033[0;31m" # red
+    y="\033[1;33m" # yellow
+    x="\033[0m" # reset
+}
+
+kcontext_help() {
+    echo "Usage: kcontext <kubeconfig>"
+    echo
+    echo "Configured profiles  : ${KUBECONFIGS[@]}"
+}
+
+set_profile() {
+if [ -z "$KUBECONFIG" ];  then
+    kcontext_help
+elif [[ ! " ${KUBECONFIGS[@]} " =~ " ${KUBECONFIG} " ]]; then
+    echo -e "Error: profile ${r}${KUBECONFIG}${x} not found"
+    kcontext_help
+else
+    export KUBECONFIG=~/.kube/${KUBECONFIG}
+fi
+}
+
+main() {
+    declare_variables
+    set_profile
+}
+
+main

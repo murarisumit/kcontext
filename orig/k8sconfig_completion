@@ -1,0 +1,18 @@
+#/usr/bin/env bash
+
+_kconfig_completions()
+{
+    # we will not allow any kind of completion to take place if at least one argument has already been typed
+    if [ "${#COMP_WORDS[@]}" != "2" ]; then
+        return
+    fi
+
+    local suggestions=('list_eks_clusters'
+     'fetch_eks_kubeconfig'
+    )
+
+    COMPREPLY=($(compgen -W "${suggestions[*]}" -- "${COMP_WORDS[1]}"))    
+
+}
+
+complete -F _kconfig_completions k8sconfig
