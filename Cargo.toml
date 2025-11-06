@@ -1,0 +1,17 @@
+[package]
+name = "kcontext"
+version = "0.0.2"
+edition = "2021"
+authors = ["Sumit Murari <sumit@example.com>"]
+description = "Simple Kubernetes kubeconfig switcher CLI"
+license = "MIT"
+repository = "https://github.com/murarisumit/kcontext"
+
+[dependencies]
+clap = { version = "4.5", features = ["derive"] }
+glob = "0.3"
+dirs = "5.0"
+
+[[bin]]
+name = "kcontext"
+path = "src/main.rs"

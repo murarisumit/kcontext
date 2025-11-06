@@ -21,20 +21,20 @@ docker-compose run --rm kcontext-test bash -c '
     
     echo ""
     echo "📋 Available kubeconfig files:"
-    ./bin/kcontext --list
+    ./target/release/kcontext --list
     
     echo ""
     echo "🐚 Testing Bash integration..."
-    export PATH="$PWD/bin:$PATH"
+    export PATH="$PWD/target/release:$PATH"
     bash -c "eval \"\$(kcontext --init bash)\" && kcontext dev.kubeconfig && echo \"Current KUBECONFIG: \$KUBECONFIG\""
     
     echo ""
     echo "🐚 Testing Zsh integration..."
-    zsh -c "export PATH=\"$PWD/bin:\$PATH\" && eval \"\$(kcontext --init zsh)\" && kcontext staging.kubeconfig && echo \"Current KUBECONFIG: \$KUBECONFIG\""
+    zsh -c "export PATH=\"$PWD/target/release:\$PATH\" && eval \"\$(kcontext --init zsh)\" && kcontext staging.kubeconfig && echo \"Current KUBECONFIG: \$KUBECONFIG\""
     
     echo ""
     echo "🐟 Testing Fish integration..."
-    fish -c "set -x PATH $PWD/bin \$PATH; kcontext --init fish | source; and kcontext production.kubeconfig; and echo \"Current KUBECONFIG: \$KUBECONFIG\""
+    fish -c "set -x PATH $PWD/target/release \$PATH; kcontext --init fish | source; and kcontext production.kubeconfig; and echo \"Current KUBECONFIG: \$KUBECONFIG\""
     
     echo ""
     echo "✅ All tests passed!"

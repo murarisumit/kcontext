@@ -3,28 +3,28 @@
 BINARY_NAME=kcontext
 VERSION?=dev
 BUILD_DIR=dist
-BIN_DIR=bin
+BIN_DIR=target/release
 
 all: build
 
 build:
-	@mkdir -p $(BIN_DIR)
-	go build -buildvcs=false -ldflags "-X main.version=$(VERSION)" -o $(BIN_DIR)/$(BINARY_NAME) .
+	cargo build --release
 
 build-all:
 	@mkdir -p $(BUILD_DIR)
 	./scripts/build.sh $(VERSION)
 
 clean:
-	rm -rf $(BUILD_DIR) $(BIN_DIR)
+	cargo clean
+	rm -rf $(BUILD_DIR)
 
 test:
-	go test -v ./...
+	cargo test
 
 verify: build test
 	@echo "Verifying binary..."
-	@$(BIN_DIR)/$(BINARY_NAME) --version
-	@$(BIN_DIR)/$(BINARY_NAME) --list
+	@./$(BIN_DIR)/$(BINARY_NAME) --version
+	@./$(BIN_DIR)/$(BINARY_NAME) --list
 
 # Test in Docker container (clean environment)
 docker-test:
@@ -74,6 +74,7 @@ install:
 	else \
 		sudo cp $(BIN_DIR)/$(BINARY_NAME) /usr/local/bin/$(BINARY_NAME); \
 	fi
+	@strip /usr/local/bin/$(BINARY_NAME) 2>/dev/null || true
 	@echo "✅ Installed to /usr/local/bin/"
 
 release:

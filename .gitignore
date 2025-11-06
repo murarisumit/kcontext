@@ -1,20 +1,14 @@
+# Rust build artifacts
+target/
+Cargo.lock
+*.rlib
+
 # Binaries
-bin/
 dist/
 *.exe
-*.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary, built with `go test -c`
-*.test
-
-# Output of the go coverage tool
-*.out
-
-# Go workspace file
-go.work
 
 # IDE
 .vscode/

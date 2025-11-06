@@ -1,6 +1,6 @@
-package main
+// Shell integration strings embedded directly in the binary
 
-const bashInit = `# kcontext shell integration for bash
+const BASH_INIT: &str = r#"# kcontext shell integration for bash
 function kcontext {
     # Pass flags directly to the binary
     if [ "$1" = "--list" ] || [ "$1" = "--version" ] || [ "$1" = "--help" ] || [ -z "$1" ]; then
@@ -29,12 +29,12 @@ function _kcontext_completion {
 }
 
 complete -F _kcontext_completion kcontext
-`
+"#;
 
-const zshInit = `# kcontext shell integration for zsh
+const ZSH_INIT: &str = r#"# kcontext shell integration for zsh
 function kcontext {
     # Pass flags directly to the binary
-    if [[ "$1" == "--list" ]] || [[ "$1" == "--version" ]] || [[ "$1" == "--help" ]] || [[ -z "$1" ]]; then
+    if [ "$1" = "--list" ] || [ "$1" = "--version" ] || [ "$1" = "--help" ] || [ -z "$1" ]; then
         command kcontext "$@"
         return $?
     fi
@@ -52,18 +52,16 @@ function kcontext {
 }
 
 # Zsh completion
-if command -v compdef >/dev/null 2>&1; then
-    function _kcontext_completion {
-        local -a configs
-        configs=(${(f)"$(command kcontext --list 2>/dev/null | sed 's/Available kubeconfigs: //')"})
-        _describe 'kubeconfigs' configs
-    }
-    
-    compdef _kcontext_completion kcontext
-fi
-`
+function _kcontext_completion {
+    local -a configs
+    configs=(${(f)"$(command kcontext --list 2>/dev/null | sed 's/Available kubeconfigs: //')"})
+    _describe 'kubeconfig' configs
+}
 
-const fishInit = `# kcontext shell integration for fish
+compdef _kcontext_completion kcontext
+"#;
+
+const FISH_INIT: &str = r#"# kcontext shell integration for fish
 function kcontext
     # Pass flags directly to the binary
     if test "$argv[1]" = "--list"; or test "$argv[1]" = "--version"; or test "$argv[1]" = "--help"; or test (count $argv) -eq 0
@@ -83,8 +81,18 @@ function kcontext
 end
 
 # Fish completion
-complete -c kcontext -f
-complete -c kcontext -l list -d "List available kubeconfig files"
-complete -c kcontext -l version -d "Show version"
-complete -c kcontext -a "(command kcontext --list 2>/dev/null | sed 's/Available kubeconfigs: //' | string split ' ')"
-`
+complete -c kcontext -f -a "(command kcontext --list 2>/dev/null | sed 's/Available kubeconfigs: //')"
+"#;
+
+/// Print shell initialization script for the given shell
+pub fn print_shell_init(shell: &str) {
+    match shell {
+        "bash" => print!("{}", BASH_INIT),
+        "zsh" => print!("{}", ZSH_INIT),
+        "fish" => print!("{}", FISH_INIT),
+        _ => {
+            eprintln!("Error: unsupported shell '{}'. Supported: bash, zsh, fish", shell);
+            std::process::exit(1);
+        }
+    }
+}

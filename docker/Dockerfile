@@ -1,4 +1,4 @@
-FROM golang:1.21-bookworm
+FROM rust:1.70-bookworm
 
 # Install common tools
 RUN apt-get update && apt-get install -y \

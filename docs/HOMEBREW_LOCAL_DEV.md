@@ -5,7 +5,7 @@ This guide explains how to test the Homebrew formula locally before publishing.
 ## Prerequisites
 
 - Homebrew installed
-- Go 1.21+ installed
+- Rust 1.70+ installed (via [rustup](https://rustup.rs/))
 - This repository cloned
 
 ## Quick Start
@@ -17,7 +17,7 @@ make brew-install-local
 ```
 
 This will:
-1. Build binaries for all platforms
+1. Build binaries for all platforms using Cargo
 2. Create/update a local Homebrew tap (`murarisumit/tap`)
 3. Install kcontext via Homebrew
 
@@ -69,7 +69,7 @@ The Homebrew formula (`homebrew/kcontext.rb`) is smart enough to detect whether 
 make brew-install-local
 ├── make build-all
 │   └── ./scripts/build.sh dev
-│       └── Creates dist/kcontext-* binaries
+│       └── Creates dist/kcontext-* binaries (using cargo)
 ├── make brew-tap-local
 │   ├── Creates ~/Library/Homebrew/Taps/murarisumit/homebrew-tap if needed
 │   └── Copies homebrew/kcontext.rb to the tap's Formula/ directory

@@ -1,7 +1,7 @@
 class Kcontext < Formula
   desc "Simple Kubernetes kubeconfig switcher CLI"
   homepage "https://github.com/murarisumit/kcontext"
-  version "0.0.1"
+  version "0.0.2"
   
   # Determine the project root by going up from the formula location
   # This formula can be in homebrew/ or in a tap's Formula/ directory

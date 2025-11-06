@@ -5,7 +5,7 @@ Thank you for considering contributing to kcontext! 🎉
 ## Development Setup
 
 ### Prerequisites
-- Go 1.21 or later
+- Rust 1.70 or later (install via [rustup](https://rustup.rs/))
 - Docker (optional, for testing in isolated environment)
 - Git
 
@@ -20,11 +20,15 @@ cd kcontext
 2. Build the project:
 ```bash
 make build
+# Or directly with cargo
+cargo build --release
 ```
 
 3. Run tests:
 ```bash
 make test
+# Or directly with cargo
+cargo test
 ```
 
 4. Install locally for testing:
@@ -38,6 +42,8 @@ eval "$(kcontext --init bash)"  # or zsh/fish
 ### Unit Tests
 ```bash
 make test
+# Or
+cargo test
 ```
 
 ### Manual Testing
@@ -46,10 +52,10 @@ make test
 make verify
 
 # List available kubeconfigs
-./bin/kcontext --list
+./target/release/kcontext --list
 
 # Test shell integration
-eval "$(./bin/kcontext --init bash)"
+eval "$(./target/release/kcontext --init bash)"
 kcontext your-cluster.kubeconfig
 echo $KUBECONFIG
 ```
@@ -74,6 +80,7 @@ git checkout -b feature/your-feature-name
 2. Make your changes and ensure tests pass:
 ```bash
 make test
+cargo clippy  # Run linter
 ```
 
 3. Test in Docker to ensure cross-platform compatibility:
@@ -81,23 +88,31 @@ make test
 ./scripts/test-docker.sh
 ```
 
-4. Commit your changes:
+4. Format your code:
+```bash
+cargo fmt
+```
+
+5. Commit your changes:
 ```bash
 git commit -m "Add feature: description"
 ```
 
-5. Push to your fork:
+6. Push to your fork:
 ```bash
 git push origin feature/your-feature-name
 ```
 
-6. Open a Pull Request
+7. Open a Pull Request
 
 ## Code Style
 
-- Follow standard Go conventions
-- Run `go fmt` before committing
+- Follow standard Rust conventions
+- Run `cargo fmt` before committing
+- Run `cargo clippy` to catch common mistakes
 - Add tests for new functionality
+- Use meaningful variable names
+- Document public functions with doc comments (`///`)
 - Update documentation as needed
 
 ## Release Process

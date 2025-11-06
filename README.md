@@ -88,17 +88,18 @@ eval "$(kcontext --shell my-cluster.kubeconfig)"
 
 ### Build locally
 ```bash
-go build -o kcontext main.go shell_init.go
+cargo build --release
+# Binary will be in target/release/kcontext
 ```
 
 ### Run tests
 ```bash
-go test ./...
+cargo test
 ```
 
 ### Release process
-1. Tag version: `git tag v1.0.0`
-2. Push tag: `git push origin v1.0.0`  
+1. Tag version: `git tag v0.0.2`
+2. Push tag: `git push origin v0.0.2`  
 3. GitHub Actions will build and release binaries
 4. Update Homebrew formula if needed
 
@@ -142,10 +143,12 @@ The container comes with fake kubeconfig files (dev.kubeconfig, staging.kubeconf
 ## 🏗️ Project Structure
 ```
 kcontext/
-├── main.go                 # Core application logic
-├── shell_init.go           # Shell integration code
-├── main_test.go            # Unit tests
-├── go.mod                  # Go module
+├── src/
+│   ├── main.rs             # Core application logic
+│   ├── shell_init.rs       # Shell integration code
+│   └── tests.rs            # Unit tests
+├── Cargo.toml              # Rust dependencies and metadata
+├── Cargo.lock              # Dependency lock file
 ├── Makefile                # Build tasks
 ├── scripts/
 │   └── build.sh            # Multi-platform build script
@@ -153,17 +156,12 @@ kcontext/
 │   └── kcontext.rb
 ├── docker/                 # Docker test environment
 ├── orig/                   # Original bash scripts
-│   ├── k8sconfig
-│   ├── k8sconfig_completion
-│   ├── k8scontext
-│   ├── k8scontext_completion
-│   └── readmd.md
 └── README.md               # Documentation
 ```
 
 ## 📋 Requirements
 
-- Go 1.21+ (for building)
+- Rust 1.70+ (for building)
 - Kubeconfig files in `~/.kube/*.kubeconfig` format
 - Docker (optional, for isolated testing)
 
