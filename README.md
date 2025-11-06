@@ -87,7 +87,54 @@ kcontext helps you manage multiple separate kubeconfig files (`~/.kube/*.kubecon
 - ✅ **Cross-platform usage**
 - ✅ **Minimal dependencies**
 
-## 🛠️ Development
+## � AWS EKS Integration
+
+kcontext works great with AWS EKS! Use the AWS CLI to fetch kubeconfigs, then switch between them with kcontext.
+
+### Workflow Example
+
+```bash
+# 1. Fetch kubeconfig for an EKS cluster (one-time per cluster)
+aws eks update-kubeconfig --name my-cluster --kubeconfig ~/.kube/my-cluster.kubeconfig
+
+# 2. Switch to it instantly with kcontext
+kcontext my-cluster.kubeconfig
+
+# 3. Verify
+kubectl cluster-info
+```
+
+### Multiple EKS Clusters
+
+```bash
+# Fetch multiple cluster configs
+aws eks update-kubeconfig --name prod-cluster --kubeconfig ~/.kube/prod.kubeconfig
+aws eks update-kubeconfig --name staging-cluster --kubeconfig ~/.kube/staging.kubeconfig
+aws eks update-kubeconfig --name dev-cluster --kubeconfig ~/.kube/dev.kubeconfig
+
+# Switch between them easily
+kcontext prod.kubeconfig
+kcontext staging.kubeconfig
+kcontext dev.kubeconfig
+```
+
+### Helper Script (Optional)
+
+For convenience, you can create a helper script to list and fetch EKS clusters:
+
+```bash
+# List all EKS clusters
+aws eks list-clusters --output text --query 'clusters[*]'
+
+# Fetch a specific cluster
+aws eks update-kubeconfig --name <cluster-name> --kubeconfig ~/.kube/<cluster-name>.kubeconfig
+```
+
+See `orig/k8sconfig` for a complete example script that automates this workflow.
+
+**Note:** kcontext intentionally has no AWS dependencies - it just switches between kubeconfig files. Use AWS CLI or your preferred tool to manage the kubeconfig files themselves.
+
+## �🛠️ Development
 
 ### Build locally
 ```bash
