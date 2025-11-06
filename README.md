@@ -68,16 +68,19 @@ eval "$(kcontext --shell my-cluster.kubeconfig)"
 
 ## 🎯 Why kcontext?
 
+kcontext helps you manage multiple separate kubeconfig files (`~/.kube/*.kubeconfig`) instead of contexts within a single `~/.kube/config` file.
+
 ### Comparison with other tools:
 
-| Tool | Usage | Dependencies | Homebrew | Speed | 
-|------|-------|--------------|----------|-------|
-| **kcontext** | **`kcontext cluster.kubeconfig`** | **None** | **✅** | **Fast** |
-| kubectx | `kubectx context-name` | bash, kubectl | ✅ | Medium |
-| kubectl | `export KUBECONFIG=path` | kubectl | ✅ | Slow |
+| Tool | Usage | Approach | Dependencies | 
+|------|-------|----------|--------------|
+| **kcontext** | **`kcontext cluster.kubeconfig`** | **Separate kubeconfig files** | **None** |
+| kubectx | `kubectx context-name` | Contexts in single config | kubectl |
+| kubectl | `kubectl config use-context` | Contexts in single config | kubectl |
 
 ### Perfect for:
-- ✅ **Quick kubeconfig switching**
+- ✅ **Managing separate kubeconfig files per cluster**
+- ✅ **Keeping ~/.kube/config clean and organized**
 - ✅ **Managing multiple clusters**
 - ✅ **CI/CD environments**  
 - ✅ **Homebrew users**
